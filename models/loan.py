@@ -2,16 +2,17 @@ from datetime import date
 
 
 class Loan:
-    """Ένας δανεισμός βιβλίου σε μέλος."""
+    """Ένας δανεισμός βιβλίου σε χρήστη."""
 
-    def __init__(self, book_id, member_id, loan_date, due_date,
-                 return_date=None, id=None):
+    def __init__(self, book_id, user_id, loan_date, due_date,
+                 return_date=None, id=None, book_title=None):
         self.id = id
         self.book_id = book_id
-        self.member_id = member_id
+        self.user_id = user_id
         self.loan_date = loan_date
         self.due_date = due_date
         self.return_date = return_date
+        self.book_title = book_title
 
     def is_returned(self):
         return self.return_date is not None
@@ -22,5 +23,6 @@ class Loan:
         return not self.is_returned() and today > self.due_date
 
     def __str__(self):
+        title = self.book_title or f"βιβλίο {self.book_id}"
         status = "επεστράφη" if self.is_returned() else "ενεργός"
-        return f"Δανεισμός βιβλίου {self.book_id} σε μέλος {self.member_id} ({status})"
+        return f"{title}, έως {self.due_date} ({status})"
