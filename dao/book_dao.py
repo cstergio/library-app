@@ -28,6 +28,15 @@ class BookDAO:
         if row is None:
             return None
         return self._row_to_book(row)
+    def get_by_isbn(self, isbn):
+        conn = get_connection(self.db_path)
+        row = conn.execute(
+            "SELECT * FROM books WHERE isbn = ?", (isbn,)
+        ).fetchone()
+        conn.close()
+        if row is None:
+            return None
+        return self._row_to_book(row)
 
     def get_all(self):
         conn = get_connection(self.db_path)
@@ -59,3 +68,14 @@ class BookDAO:
             year=row["year"],
             isbn=row["isbn"],
         )
+    def get_available(self):
+        conn = get_connection(self.db_path)
+        rows = conn.execute(
+            "SELECT * FROM books "
+            "WHERE id NOT IN ("
+            "    SELECT book_id FROM loans WHERE return_date IS NULL"
+            ") "
+            "ORDER BY title"
+        ).fetchall()
+        conn.close()
+        return [self._row_to_book(row) for row in rows]
