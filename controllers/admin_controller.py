@@ -1,4 +1,4 @@
-from flask import (Blueprint, current_app, flash, redirect,
+from flask import (Blueprint, current_app, flash, g, redirect,
                    render_template, request, url_for)
 
 from controllers.decorators import admin_required
@@ -85,3 +85,83 @@ def delete_book(book_id):
         flash("Το βιβλίο διαγράφηκε.", "success")
 
     return redirect(url_for("admin.books"))
+
+
+# ---------- λίστα χρηστών ----------
+
+@admin.route("/users")
+@admin_required
+def users():
+    all_users = current_app.user_service.list_all()
+    return render_template("admin/users.html", users=all_users)
+
+
+# ---------- νέος χρήστης ----------
+
+@admin.route("/users/new", methods=["GET", "POST"])
+@admin_required
+def new_user():
+    if request.method == "POST":
+        form = request.form
+        try:
+            current_app.user_service.create(
+                form.get("name"), form.get("email"),
+                form.get("password"), form.get("role"),
+            )
+        except ServiceError as error:
+            flash(str(error), "error")
+            return render_template("admin/user_form.html",
+                                   heading="Νέος χρήστης", user=form,
+                                   is_new=True)
+
+        flash("Ο χρήστης δημιουργήθηκε.", "success")
+        return redirect(url_for("admin.users"))
+
+    return render_template("admin/user_form.html",
+                           heading="Νέος χρήστης", user={}, is_new=True)
+
+
+# ---------- αλλαγή χρήστη ----------
+
+@admin.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+@admin_required
+def edit_user(user_id):
+    try:
+        user = current_app.user_service.get(user_id)
+    except ServiceError as error:
+        flash(str(error), "error")
+        return redirect(url_for("admin.users"))
+
+    if request.method == "POST":
+        form = request.form
+        try:
+            current_app.user_service.update(
+                user_id, form.get("name"), form.get("email"),
+                form.get("role"), new_password=form.get("password"),
+            )
+        except ServiceError as error:
+            flash(str(error), "error")
+            return render_template("admin/user_form.html",
+                                   heading="Αλλαγή χρήστη", user=form,
+                                   is_new=False)
+
+        flash("Ο χρήστης αποθηκεύτηκε.", "success")
+        return redirect(url_for("admin.users"))
+
+    return render_template("admin/user_form.html",
+                           heading="Αλλαγή χρήστη", user=user, is_new=False)
+
+
+# ---------- διαγραφή χρήστη ----------
+
+@admin.route("/users/<int:user_id>/delete", methods=["POST"])
+@admin_required
+def delete_user(user_id):
+    try:
+        current_app.user_service.delete(user_id, current_user_id=g.user.id)
+    except ServiceError as error:
+        flash(str(error), "error")
+    else:
+        flash("Ο χρήστης διαγράφηκε.", "success")
+
+    return redirect(url_for("admin.users"))

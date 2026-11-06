@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Διαχείριση χρηστών{% endblock %}
+
+{% block content %}
+    <h1>Διαχείριση χρηστών</h1>
+
+    <p><a class="button-link" href="{{ url_for('admin.new_user') }}">+ Νέος χρήστης</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Όνομα</th>
+                <th>Email</th>
+                <th>Ρόλος</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ "Διαχειριστής" if user.is_admin() else "Χρήστης" }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}">Αλλαγή</a>
+                        {% if user.id != g.user.id %}
+                            <form method="post"
+                                  action="{{ url_for('admin.delete_user', user_id=user.id) }}">
+                                <button type="submit" class="danger">Διαγραφή</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
