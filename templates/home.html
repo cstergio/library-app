@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Καλώς ήρθατε στη Βιβλιοθήκη</h1>
-    <p>Δανειστείτε βιβλία, δείτε τις προθεσμίες σας και το ιστορικό σας.</p>
+    <section class="hero">
+        <h1>Καλώς ήρθατε στη Βιβλιοθήκη</h1>
+        <p>Δανειστείτε βιβλία, δείτε τις προθεσμίες σας και το ιστορικό σας.</p>
+
+        {% if g.user %}
+            <a class="button-link" href="{{ url_for('user.books') }}">Δείτε τα διαθέσιμα βιβλία</a>
+        {% else %}
+            <a class="button-link" href="{{ url_for('auth.login') }}">Σύνδεση</a>
+            <a href="{{ url_for('auth.register') }}">ή κάντε εγγραφή</a>
+        {% endif %}
+    </section>
 {% endblock %}
