@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Διαχείριση βιβλίων{% endblock %}
+
+{% block content %}
+    <h1>Διαχείριση βιβλίων</h1>
+
+    <p><a class="button-link" href="{{ url_for('admin.new_book') }}">+ Νέο βιβλίο</a></p>
+
+    {% if books %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Τίτλος</th>
+                    <th>Συγγραφέας</th>
+                    <th>Έτος</th>
+                    <th>ISBN</th>
+                    <th>Κατάσταση</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.year or "" }}</td>
+                        <td>{{ book.isbn or "" }}</td>
+                        <td>
+                            {% if book.id in available_ids %}
+                                Διαθέσιμο
+                            {% else %}
+                                <em>Δανεισμένο</em>
+                            {% endif %}
+                        </td>
+                        <td class="actions">
+                            <a href="{{ url_for('admin.edit_book', book_id=book.id) }}">Αλλαγή</a>
+                            <form method="post"
+                                  action="{{ url_for('admin.delete_book', book_id=book.id) }}">
+                                <button type="submit" class="danger">Διαγραφή</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Δεν υπάρχουν βιβλία ακόμα.</p>
+    {% endif %}
+{% endblock %}

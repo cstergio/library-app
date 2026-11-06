@@ -60,6 +60,8 @@ def login():
         session.clear()
         session["user_id"] = user.id
         flash(f"Καλώς ήρθατε, {user.name}!", "success")
+        if user.is_admin():
+            return redirect(url_for("admin.books"))
         return redirect(url_for("user.books"))
 
     return render_template("auth/login.html", email="")

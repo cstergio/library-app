@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 
+from controllers.admin_controller import admin
 from controllers.auth_controller import auth
 from controllers.user_controller import user
 from dao.book_dao import BookDAO
@@ -30,8 +31,13 @@ def create_app(db_path=DB_PATH):
     def home():
         return render_template("home.html")
 
+    @app.errorhandler(403)
+    def forbidden(error):
+        return render_template("403.html"), 403
+
     app.register_blueprint(auth)
     app.register_blueprint(user)
+    app.register_blueprint(admin)
 
     return app
 

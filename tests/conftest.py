@@ -40,3 +40,21 @@ def maria_client(client, maria):
         "password": "123456",
     })
     return client
+
+
+
+@pytest.fixture
+def admin_user(app):
+    """Ένας διαχειριστής."""
+    return app.user_service.create("Admin", "admin@library.gr", "123456",
+                                   "admin")
+
+
+@pytest.fixture
+def admin_client(client, admin_user):
+    """Ψεύτικος browser όπου ο διαχειριστής είναι ήδη συνδεδεμένος."""
+    client.post("/login", data={
+        "email": "admin@library.gr",
+        "password": "123456",
+    })
+    return client

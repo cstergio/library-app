@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ heading }}{% endblock %}
+
+{% block content %}
+    <h1>{{ heading }}</h1>
+
+    <form method="post">
+        <label for="title">Τίτλος</label>
+        <input id="title" name="title" value="{{ book.title or '' }}" required>
+
+        <label for="author">Συγγραφέας</label>
+        <input id="author" name="author" value="{{ book.author or '' }}" required>
+
+        <label for="year">Έτος (προαιρετικό)</label>
+        <input id="year" name="year" value="{{ book.year or '' }}">
+
+        <label for="isbn">ISBN (προαιρετικό)</label>
+        <input id="isbn" name="isbn" value="{{ book.isbn or '' }}">
+
+        <button type="submit">Αποθήκευση</button>
+    </form>
+
+    <p><a href="{{ url_for('admin.books') }}">Πίσω στη λίστα</a></p>
+{% endblock %}

@@ -14,6 +14,9 @@
                 <a href="{{ url_for('user.books') }}">Βιβλία</a>
                 <a href="{{ url_for('user.my_loans') }}">Τα βιβλία μου</a>
                 <a href="{{ url_for('user.history') }}">Ιστορικό</a>
+                {% if g.user.is_admin() %}
+                    <a href="{{ url_for('admin.books') }}">Διαχείριση βιβλίων</a>
+                {% endif %}
                 <span class="user-name">{{ g.user.name }}</span>
                 <a href="{{ url_for('auth.logout') }}">Αποσύνδεση</a>
             {% else %}
