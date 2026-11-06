@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Διαθέσιμα βιβλία{% endblock %}
+
+{% block content %}
+    <h1>Διαθέσιμα βιβλία</h1>
+
+    {% if books %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Τίτλος</th>
+                    <th>Συγγραφέας</th>
+                    <th>Έτος</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.year or "" }}</td>
+                        <td>
+                            <form method="post"
+                                  action="{{ url_for('user.borrow', book_id=book.id) }}">
+                                <button type="submit">Δανεισμός</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Δεν υπάρχουν διαθέσιμα βιβλία αυτή τη στιγμή.</p>
+    {% endif %}
+{% endblock %}

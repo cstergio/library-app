@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Σύνδεση{% endblock %}
+
+{% block content %}
+    <h1>Σύνδεση</h1>
+
+    <form method="post">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" value="{{ email }}" required>
+
+        <label for="password">Κωδικός</label>
+        <input id="password" name="password" type="password" required>
+
+        <button type="submit">Σύνδεση</button>
+    </form>
+
+    <p>Δεν έχετε λογαριασμό; <a href="{{ url_for('auth.register') }}">Κάντε εγγραφή</a></p>
+{% endblock %}

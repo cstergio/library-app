@@ -1,0 +1,129 @@
+/* ---------- Γενικά ---------- */
+
+body {
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    background: #f6f5f2;
+    color: #222;
+}
+
+main {
+    max-width: 800px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+/* ---------- Κεφαλίδα και μενού ---------- */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: #2f4858;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    margin-left: 16px;
+}
+
+header .logo {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-left: 0;
+}
+
+header .user-name {
+    color: #cfe0ea;
+    margin-left: 16px;
+}
+
+/* ---------- Μηνύματα ---------- */
+
+.message {
+    padding: 10px 14px;
+    border-radius: 6px;
+}
+
+.message.success {
+    background: #dff3e4;
+    color: #1d5e2f;
+}
+
+.message.error {
+    background: #fbe3e3;
+    color: #8a1c1c;
+}
+
+/* ---------- Φόρμες ---------- */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 360px;
+}
+
+label {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+input {
+    padding: 8px 10px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+button {
+    margin-top: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #2f4858;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #3e5f74;
+}
+
+/* ---------- Πίνακες ---------- */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e2dc;
+}
+
+th {
+    background: #e9eef1;
+}
+
+td form {
+    display: inline;
+}
+
+td button {
+    margin-top: 0;
+    padding: 6px 12px;
+}
+
+tr.overdue td {
+    background: #fbe3e3;
+    color: #8a1c1c;
+}

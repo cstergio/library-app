@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Τα βιβλία μου{% endblock %}
+
+{% block content %}
+    <h1>Τα βιβλία μου</h1>
+
+    {% if loans %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Τίτλος</th>
+                    <th>Δανεισμός</th>
+                    <th>Επιστροφή έως</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                    <tr class="{{ 'overdue' if loan.is_overdue() else '' }}">
+                        <td>{{ loan.book_title }}</td>
+                        <td>{{ loan.loan_date.strftime("%d/%m/%Y") }}</td>
+                        <td>
+                            {{ loan.due_date.strftime("%d/%m/%Y") }}
+                            {% if loan.is_overdue() %}
+                                <strong>(εκπρόθεσμο)</strong>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="post"
+                                  action="{{ url_for('user.return_loan', loan_id=loan.id) }}">
+                                <button type="submit">Επιστροφή</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Δεν έχετε δανεισμένα βιβλία αυτή τη στιγμή.</p>
+        <p><a href="{{ url_for('user.books') }}">Δείτε τα διαθέσιμα βιβλία</a></p>
+    {% endif %}
+{% endblock %}
